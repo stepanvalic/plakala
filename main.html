@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLAKALA - 9.D</title>
+    <link rel="icon" type="image/png" href="ikonka.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .marquee {
+            width: 100%;
+            background-color: #222;
+            color: #fff;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .marquee p {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+            font-size: 30px;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border: 4px solid #444;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #222;
+            color: #fff;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="marquee">
+        <p>PLAKALA - 9.D version</p>
+    </div>
+
+    <div class="content">
+        <div class="video-container">
+            <h2>PLAKALA - karaoke</h2>
+            <video controls>
+                <source src="karaoke.mp4" type="video/mp4">
+                Váš prohlížeč nepodporuje HTML5 video.
+            </video>
+        </div>
+        <div class="video-container">
+            <h2>PLAKALA - karaoke + hlas</h2>
+            <video controls>
+                <source src="full.mp4" type="video/mp4">
+                Váš prohlížeč nepodporuje HTML5 video.
+            </video>
+        </div>
+        <div class="video-container">
+            <h2>PLAKALA - bez zvuku</h2>
+            <video controls>
+                <source src="text-only.mp4" type="video/mp4">
+                Váš prohlížeč nepodporuje HTML5 video.
+            </video>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 Matyáš Šibor | video</p>
+        <p>&copy; 2024 Štěpán Valíček | web</p>
+    </footer>
+</body>
+</html>
