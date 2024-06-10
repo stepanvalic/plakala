@@ -1,2 +1,2 @@
 RewriteEngine on
-RewriteRule ^plakala plakala.html [NC]
+RewriteRule ^plakala index.html [NC]
