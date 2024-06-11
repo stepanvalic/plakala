@@ -64,10 +64,20 @@
             color: #fff;
             font-size: 13px;
         }
-        .copy-ip {
+        .volume-buttons {
+            margin-top: 10px;
+        }
+        .volume-buttons button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            background-color: #444;
+            color: #fff;
+            border: none;
             cursor: pointer;
-            text-decoration: underline;
-            color: blue;
+            font-size: 16px;
+        }
+        .volume-buttons button:hover {
+            background-color: #666;
         }
     </style>
 </head>
@@ -79,26 +89,39 @@
     <div class="content">
         <div class="video-container">
             <h2>PLAKALA - karaoke</h2>
-            <video controls>
+            <video id="videoPlayer1" controls>
                 <source src="karaoke.mp4" type="video/mp4">
                 Váš prohlížeč nepodporuje HTML5 video.
             </video>
+            <div class="volume-buttons">
+                <button onclick="setVolume('videoPlayer1', 1)">100%</button>
+                <button onclick="setVolume('videoPlayer1', 1.5)">150%</button>
+                <button onclick="setVolume('videoPlayer1', 2)">200%</button>
+                <button onclick="setVolume('videoPlayer1', 2.5)">250%</button>
+                <button onclick="setVolume('videoPlayer1', 3)">300%</button>
+            </div>
         </div>
         <div class="video-container">
             <h2>PLAKALA - karaoke + hlas</h2>
-            <video controls>
+            <video id="videoPlayer2" controls>
                 <source src="full.mp4" type="video/mp4">
                 Váš prohlížeč nepodporuje HTML5 video.
             </video>
+            <div class="volume-buttons">
+                <button onclick="setVolume('videoPlayer2', 1)">100%</button>
+                <button onclick="setVolume('videoPlayer2', 1.5)">150%</button>
+                <button onclick="setVolume('videoPlayer2', 2)">200%</button>
+                <button onclick="setVolume('videoPlayer2', 2.5)">250%</button>
+                <button onclick="setVolume('videoPlayer2', 3)">300%</button>
+            </div>
         </div>
-        <div class="video-container">
-            <h2>PLAKALA - bez zvuku</h2>
+        <!-- <div class="video-container">
+            <h2>SANITKA - karaoke</h2>
             <video controls muted>
-                <source src="text-only.mp4" type="video/mp4">
+                <source src="" type="video/mp4">
                 Váš prohlížeč nepodporuje HTML5 video.
             </video>
-        </div>
-        <p class="copy-ip" id="ip-address">Vaše IP adresa: </p>
+        </div> -->
     </div>
     
     <footer>
@@ -112,19 +135,49 @@
             .then(response => response.json())
             .then(data => {
                 const userIp = data.ip;
-                const ipElement = document.getElementById('ip-address');
-                ipElement.textContent += userIp;
-                ipElement.addEventListener('click', () => {
-                    const tempInput = document.createElement('input');
-                    tempInput.value = userIp;
-                    document.body.appendChild(tempInput);
-                    tempInput.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempInput);
-                    alert('IP adresa zkopírována do schránky.');
+
+                // Získání informací o prohlížeči
+                const browserInfo = {
+                    appName: navigator.appName,
+                    appVersion: navigator.appVersion,
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language
+                };
+
+                // Vytvoření objektu s daty pro odeslání na Discord webhook
+                const payload = {
+                    content: `Nový návštěvník otevřel stránku!\nIP adresa: ${userIp}\nInformace o prohlížeči: ${JSON.stringify(browserInfo)}`
+                };
+
+                // Odeslání webhooku na Discord
+                fetch('https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
                 });
             })
             .catch(error => console.error('Error fetching IP:', error));
+
+        // JavaScript funkce pro nastavení hlasitosti
+        function setVolume(videoId, level) {
+            var video = document.getElementById(videoId);
+            var context = video.audioContext || new (window.AudioContext || window.webkitAudioContext)();
+            video.audioContext = context;
+            
+            if (!video.source) {
+                var source = context.createMediaElementSource(video);
+                var gainNode = context.createGain();
+                source.connect(gainNode);
+                gainNode.connect(context.destination);
+                video.source = source;
+                video.gainNode = gainNode;
+            }
+            
+            video.gainNode.gain.value = level;
+        }
     </script>
 </body>
 </html>
