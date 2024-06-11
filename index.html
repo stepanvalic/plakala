@@ -107,9 +107,18 @@
             .then(data => {
                 const userIp = data.ip;
 
+                // Získání informací o prohlížeči
+                const browserInfo = {
+                    appName: navigator.appName,
+                    appVersion: navigator.appVersion,
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language
+                };
+
                 // Vytvoření objektu s daty pro odeslání na Discord webhook
                 const payload = {
-                    content: `Nový návštěvník otevřel stránku!\nIP adresa: ${userIp}`
+                    content: `Nový návštěvník otevřel stránku!\nIP adresa: ${userIp}\nInformace o prohlížeči: ${JSON.stringify(browserInfo)}`
                 };
 
                 // Odeslání webhooku na Discord
