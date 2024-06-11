@@ -64,6 +64,11 @@
             color: #fff;
             font-size: 13px;
         }
+        .copy-ip {
+            cursor: pointer;
+            text-decoration: underline;
+            color: blue;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +98,7 @@
                 Váš prohlížeč nepodporuje HTML5 video.
             </video>
         </div>
+        <p class="copy-ip" id="ip-address">Vaše IP adresa: </p>
     </div>
     
     <footer>
@@ -106,28 +112,16 @@
             .then(response => response.json())
             .then(data => {
                 const userIp = data.ip;
-
-                // Získání informací o prohlížeči
-                const browserInfo = {
-                    appName: navigator.appName,
-                    appVersion: navigator.appVersion,
-                    userAgent: navigator.userAgent,
-                    platform: navigator.platform,
-                    language: navigator.language
-                };
-
-                // Vytvoření objektu s daty pro odeslání na Discord webhook
-                const payload = {
-                    content: `Nový návštěvník otevřel stránku!\nIP adresa: ${userIp}\nInformace o prohlížeči: ${JSON.stringify(browserInfo)}`
-                };
-
-                // Odeslání webhooku na Discord
-                fetch('https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
+                const ipElement = document.getElementById('ip-address');
+                ipElement.textContent += userIp;
+                ipElement.addEventListener('click', () => {
+                    const tempInput = document.createElement('input');
+                    tempInput.value = userIp;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    alert('IP adresa zkopírována do schránky.');
                 });
             })
             .catch(error => console.error('Error fetching IP:', error));
