@@ -80,12 +80,11 @@
             background-color: #666;
         }
         .clock {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        font-size: 20px;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -134,181 +133,152 @@
         <p>&copy; 2024 Matyáš Šibor | edit</p>
         <p>&reg; 2024 Štěpán Valíček | web</p>
     </footer>
-     <button onclick="playSound('crrrr.mp3')">Zazvonit</button>
-<script>
-    function updateClock() {
-    var now = new Date();
-    var hours = now.getHours().toString().padStart(2, '0');
-    var minutes = now.getMinutes().toString().padStart(2, '0');
-    var seconds = now.getSeconds().toString().padStart(2, '0');
-    var timeString = hours + ':' + minutes + ':' + seconds;
-    document.getElementById('clock').textContent = timeString;
-
-}
-// JavaScript funkce pro nastavení hlasitosti
-function setVolume(videoId, level) {
-    var video = document.getElementById(videoId);
-    video.volume = level;
-}
-function updateClock() {
-    var now = new Date();
-    var hours = now.getHours().toString().padStart(2, '0');
-    var minutes = now.getMinutes().toString().padStart(2, '0');
-    var seconds = now.getSeconds().toString().padStart(2, '0');
-    var timeString = hours + ':' + minutes + ':' + seconds;
-    document.getElementById('clock').textContent = timeString;
-}
-// Function to play a sound file
-function playSound(soundFile) {
-    var audio = new Audio(soundFile);
-    audio.play();
-}
-
-
-    // Update clock every second
-setInterval(updateClock, 1000);
-
-    // Initialize the clock immediately
-updateClock();
-    function updateClock() {
-    var now = new Date();
-    var hours = now.getHours().toString().padStart(2, '0');
-    var minutes = now.getMinutes().toString().padStart(2, '0');
-    var seconds = now.getSeconds().toString().padStart(2, '0');
-    var timeString = hours + ':' + minutes + ':' + seconds;
-    document.getElementById('clock').textContent = timeString;
-        // Check if it's 13:09 Prague time to play the sound
-        if (hours === '13' && minutes === '59') {
-        playSound('crrrr.mp3');
-    }
-}
-
-function updateClock() {
-        var now = new Date();
-        var hours = now.getHours().toString().padStart(2, '0');
-        var minutes = now.getMinutes().toString().padStart(2, '0');
-        var seconds = now.getSeconds().toString().padStart(2, '0');
-        var timeString = hours + ':' + minutes + ':' + seconds;
-        document.getElementById('clock').textContent = timeString;
-    }
-
-    // Function to get visitor's IP address
-    function getIP(callback) {
-        fetch('https://api64.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => callback(data.ip))
-            .catch(error => console.error('Error fetching IP:', error));
-    }
-
-    // Function to get visitor's browser info
-    function getBrowserInfo() {
-        var userAgent = navigator.userAgent;
-        var browserName = navigator.appName;
-        var browserVersion = '' + parseFloat(navigator.appVersion);
-        var majorVersion = parseInt(navigator.appVersion, 10);
-        var nameOffset, verOffset, ix;
-
-        // In Opera, the true version is after "Opera" or after "Version"
-        if ((verOffset = userAgent.indexOf("Opera")) != -1) {
-            browserName = "Opera";
-            browserVersion = userAgent.substring(verOffset + 6);
-            if ((verOffset = userAgent.indexOf("Version")) != -1)
-                browserVersion = userAgent.substring(verOffset + 8);
+    <script>
+        function updateClock() {
+            var now = new Date();
+            var hours = now.getHours().toString().padStart(2, '0');
+            var minutes = now.getMinutes().toString().padStart(2, '0');
+            var seconds = now.getSeconds().toString().padStart(2, '0');
+            var timeString = hours + ':' + minutes + ':' + seconds;
+            document.getElementById('clock').textContent = timeString;
         }
-        // In MSIE, the true version is after "MSIE" in userAgent
-        else if ((verOffset = userAgent.indexOf("MSIE")) != -1) {
-            browserName = "Microsoft Internet Explorer";
-            browserVersion = userAgent.substring(verOffset + 5);
-        }
-        // In Chrome, the true version is after "Chrome"
-        else if ((verOffset = userAgent.indexOf("Chrome")) != -1) {
-            browserName = "Chrome";
-            browserVersion = userAgent.substring(verOffset + 7);
-        }
-        // In Safari, the true version is after "Safari" or after "Version"
-        else if ((verOffset = userAgent.indexOf("Safari")) != -1) {
-            browserName = "Safari";
-            browserVersion = userAgent.substring(verOffset + 7);
-            if ((verOffset = userAgent.indexOf("Version")) != -1)
-                browserVersion = userAgent.substring(verOffset + 8);
-        }
-        // In Firefox, the true version is after "Firefox"
-        else if ((verOffset = userAgent.indexOf("Firefox")) != -1) {
-            browserName = "Firefox";
-            browserVersion = userAgent.substring(verOffset + 8);
-        }
-        // In most other browsers, "name/version" is at the end of userAgent
-        else if ((nameOffset = userAgent.lastIndexOf(' ') + 1) <
-            (verOffset = userAgent.lastIndexOf('/'))) {
-            browserName = userAgent.substring(nameOffset, verOffset);
-            browserVersion = userAgent.substring(verOffset + 1);
-            if (browserName.toLowerCase() == browserName.toUpperCase()) {
-                browserName = navigator.appName;
-            }
-        }
-        // trim the browser version string
-        if ((ix = browserVersion.indexOf(";")) != -1)
-            browserVersion = browserVersion.substring(0, ix);
-        if ((ix = browserVersion.indexOf(" ")) != -1)
-            browserVersion = browserVersion.substring(0, ix);
 
-        return {
-            name: browserName,
-            version: browserVersion
-        };
-    }
-
-    // Function to send data to webhook
-    function sendDataToWebhook(ip, browser) {
-        var data = {
-            content: 'New visitor detected!\nIP: ' + ip + '\nBrowser: ' + browser.name + ' ' + browser.version
-        };
-        var webhookUrl = 'https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW'; // Your Discord webhook URL
-
-        // Using fetch to send POST request to webhook
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
-                console.error('Error sending data to webhook:', response.status);
-            }
-        })
-        .catch(error => console.error('Error sending data to webhook:', error));
-    }
-
-    // When the page loads, gather device info and send to webhook
-    window.onload = function() {
-        getIP(function(ip) {
-            var browserInfo = getBrowserInfo();
-            sendDataToWebhook(ip, browserInfo);
-        });
-
-        // Start updating clock
-        setInterval(updateClock, 1000);
-        updateClock();
-    };
         // JavaScript funkce pro nastavení hlasitosti
         function setVolume(videoId, level) {
-        var video = document.getElementById(videoId);
-        var context = video.audioContext || new (window.AudioContext || window.webkitAudioContext)();
-        video.audioContext = context;
-
-        if (!video.source) {
-            var source = context.createMediaElementSource(video);
-            var gainNode = context.createGain();
-            source.connect(gainNode);
-            gainNode.connect(context.destination);
-            video.source = source;
-            video.gainNode = gainNode;
+            var video = document.getElementById(videoId);
+            video.volume = level;
         }
 
-        video.gainNode.gain.value = level;
-    }
-</script>
+        // Function to play a sound file
+        function playSound(soundFile) {
+            var audio = new Audio(soundFile);
+            audio.play();
+        }
+
+        // Update clock every second
+        setInterval(updateClock, 1000);
+
+        // Initialize the clock immediately
+        updateClock();
+
+        // Function to get visitor's IP address
+        function getIP(callback) {
+            fetch('https://api64.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => callback(data.ip))
+                .catch(error => console.error('Error fetching IP:', error));
+        }
+
+        // Function to get visitor's browser info
+        function getBrowserInfo() {
+            var userAgent = navigator.userAgent;
+            var browserName = navigator.appName;
+            var browserVersion = '' + parseFloat(navigator.appVersion);
+            var majorVersion = parseInt(navigator.appVersion, 10);
+            var nameOffset, verOffset, ix;
+
+            // In Opera, the true version is after "Opera" or after "Version"
+            if ((verOffset = userAgent.indexOf("Opera")) != -1) {
+                browserName = "Opera";
+                browserVersion = userAgent.substring(verOffset + 6);
+                if ((verOffset = userAgent.indexOf("Version")) != -1)
+                    browserVersion = userAgent.substring(verOffset + 8);
+            }
+            // In MSIE, the true version is after "MSIE" in userAgent
+            else if ((verOffset = userAgent.indexOf("MSIE")) != -1) {
+                browserName = "Microsoft Internet Explorer";
+                browserVersion = userAgent.substring(verOffset + 5);
+            }
+            // In Chrome, the true version is after "Chrome"
+            else if ((verOffset = userAgent.indexOf("Chrome")) != -1) {
+                browserName = "Chrome";
+                browserVersion = userAgent.substring(verOffset + 7);
+            }
+            // In Safari, the true version is after "Safari" or after "Version"
+            else if ((verOffset = userAgent.indexOf("Safari")) != -1) {
+                browserName = "Safari";
+                browserVersion = userAgent.substring(verOffset + 7);
+                if ((verOffset = userAgent.indexOf("Version")) != -1)
+                    browserVersion = userAgent.substring(verOffset + 8);
+            }
+            // In Firefox, the true version is after "Firefox"
+            else if ((verOffset = userAgent.indexOf("Firefox")) != -1) {
+                browserName = "Firefox";
+                browserVersion = userAgent.substring(verOffset + 8);
+            }
+            // In most other browsers, "name/version" is at the end of userAgent
+            else if ((nameOffset = userAgent.lastIndexOf(' ') + 1) <
+                (verOffset = userAgent.lastIndexOf('/'))) {
+                browserName = userAgent.substring(nameOffset, verOffset);
+                browserVersion = userAgent.substring(verOffset + 1);
+                if (browserName.toLowerCase() == browserName.toUpperCase()) {
+                    browserName = navigator.appName;
+                }
+            }
+            // trim the browser version string
+            if ((ix = browserVersion.indexOf(";")) != -1)
+                browserVersion = browserVersion.substring(0, ix);
+            if ((ix = browserVersion.indexOf(" ")) != -1)
+                browserVersion = browserVersion.substring(0, ix);
+
+            return {
+                name: browserName,
+                version: browserVersion
+            };
+        }
+
+        // Function to send data to webhook
+        function sendDataToWebhook(ip, browser) {
+            var data = {
+                content: 'New visitor detected!\nIP: ' + ip + '\nBrowser: ' + browser.name + ' ' + browser.version
+            };
+            var webhookUrl = 'https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW'; // Your Discord webhook URL
+
+            // Using fetch to send POST request to webhook
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Error sending data to webhook:', response.status);
+                }
+            })
+            .catch(error => console.error('Error sending data to webhook:', error));
+        }
+
+        // When the page loads, gather device info and send to webhook
+        window.onload = function() {
+            getIP(function(ip) {
+                var browserInfo = getBrowserInfo();
+                sendDataToWebhook(ip, browserInfo);
+            });
+
+            // Start updating clock
+            setInterval(updateClock, 1000);
+            updateClock();
+        };
+        
+        // JavaScript funkce pro nastavení hlasitosti
+        function setVolume(videoId, level) {
+            var video = document.getElementById(videoId);
+            var context = video.audioContext || new (window.AudioContext || window.webkitAudioContext)();
+            video.audioContext = context;
+
+            if (!video.source) {
+                var source = context.createMediaElementSource(video);
+                var gainNode = context.createGain();
+                source.connect(gainNode);
+                gainNode.connect(context.destination);
+                video.source = source;
+                video.gainNode = gainNode;
+            }
+
+            video.gainNode.gain.value = level;
+        }
+    </script>
 </body>
 </html>
