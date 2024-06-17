@@ -126,6 +126,22 @@
                 <button onclick="setVolume('videoPlayer2', 10)">1000%</button>
             </div>
         </div>
+        <div class="video-container">
+            <h2>Můj čas - karaoke</h2>
+            <video id="videoPlayer3" controls>
+                <source src="muj-cas.mp4" type="video/mp4">
+                Váš prohlížeč nepodporuje HTML5 video.
+            </video>
+            <p>ovládání hlasitosti</p>
+            <div class="volume-buttons">
+                <button onclick="setVolume('videoPlayer3', 1)">100%</button>
+                <button onclick="setVolume('videoPlayer3', 1.5)">150%</button>
+                <button onclick="setVolume('videoPlayer3', 2)">200%</button>
+                <button onclick="setVolume('videoPlayer3', 2.5)">250%</button>
+                <button onclick="setVolume('videoPlayer3', 3)">300%</button>
+                <button onclick="setVolume('videoPlayer3', 10)">1000%</button>
+            </div>
+        </div>
     </div>
     
     <footer>
@@ -146,7 +162,19 @@
         // JavaScript funkce pro nastavení hlasitosti
         function setVolume(videoId, level) {
             var video = document.getElementById(videoId);
-            video.volume = level;
+            var context = video.audioContext || new (window.AudioContext || window.webkitAudioContext)();
+            video.audioContext = context;
+
+            if (!video.source) {
+                var source = context.createMediaElementSource(video);
+                var gainNode = context.createGain();
+                source.connect(gainNode);
+                gainNode.connect(context.destination);
+                video.source = source;
+                video.gainNode = gainNode;
+            }
+
+            video.gainNode.gain.value = level;
         }
 
         // Function to play a sound file
@@ -215,70 +243,16 @@
                     browserName = navigator.appName;
                 }
             }
-            // trim the browser version string
-            if ((ix = browserVersion.indexOf(";")) != -1)
-                browserVersion = browserVersion.substring(0, ix);
-            if ((ix = browserVersion.indexOf(" ")) != -1)
-                browserVersion = browserVersion.substring(0, ix);
-
-            return {
-                name: browserName,
-                version: browserVersion
-            };
+            return browserName + ' ' + browserVersion;
         }
 
-        // Function to send data to webhook
-        function sendDataToWebhook(ip, browser) {
-            var data = {
-                content: 'New visitor detected!\nIP: ' + ip + '\nBrowser: ' + browser.name + ' ' + browser.version
-            };
-            var webhookUrl = 'https://discord.com/api/webhooks/1249992879842267136/WAiERCu_Nq1GUHqocOwEAPCyKX0b2DPwzhzMrD3x7BfqFmWz9bfM_c5W4Aohrf4DSwAW'; // Your Discord webhook URL
-
-            // Using fetch to send POST request to webhook
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    console.error('Error sending data to webhook:', response.status);
-                }
-            })
-            .catch(error => console.error('Error sending data to webhook:', error));
-        }
-
-        // When the page loads, gather device info and send to webhook
+        // When the page loads, get the visitor's IP and browser info and log them
         window.onload = function() {
             getIP(function(ip) {
-                var browserInfo = getBrowserInfo();
-                sendDataToWebhook(ip, browserInfo);
+                console.log('Visitor IP: ' + ip);
             });
-
-            // Start updating clock
-            setInterval(updateClock, 1000);
-            updateClock();
+            console.log('Browser Info: ' + getBrowserInfo());
         };
-        
-        // JavaScript funkce pro nastavení hlasitosti
-        function setVolume(videoId, level) {
-            var video = document.getElementById(videoId);
-            var context = video.audioContext || new (window.AudioContext || window.webkitAudioContext)();
-            video.audioContext = context;
-
-            if (!video.source) {
-                var source = context.createMediaElementSource(video);
-                var gainNode = context.createGain();
-                source.connect(gainNode);
-                gainNode.connect(context.destination);
-                video.source = source;
-                video.gainNode = gainNode;
-            }
-
-            video.gainNode.gain.value = level;
-        }
     </script>
 </body>
 </html>
